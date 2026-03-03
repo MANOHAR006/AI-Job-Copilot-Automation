@@ -87,34 +87,33 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1FBgFLnM5dqPvmP584zxiHlpVAo7lsTPjYfT0b1yxpTQ",
+          "value": "1o-DIDMij4h-V7g-0hpC1Z2aqv0Hdkxs_1nmt066l1Hg",
           "mode": "list",
           "cachedResultName": "AI copilot ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FBgFLnM5dqPvmP584zxiHlpVAo7lsTPjYfT0b1yxpTQ/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1o-DIDMij4h-V7g-0hpC1Z2aqv0Hdkxs_1nmt066l1Hg/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FBgFLnM5dqPvmP584zxiHlpVAo7lsTPjYfT0b1yxpTQ/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1o-DIDMij4h-V7g-0hpC1Z2aqv0Hdkxs_1nmt066l1Hg/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
             "industry": "={{ $json.output.industry }}",
-            "roles": "={{ $json.output.roles.join(\", \") }}",
+            "roles": "={{$node[\"Webhook\"].json[\"body\"][\"role\"]}}",
             "tools": "={{ $json.output.tools.join(\", \") }}",
             "experience": "={{ $json.output.experience }}",
             "Skills": "={{ $json.output.skills.join(\", \") }}",
-            "Job Boards": "={{ $('Edit Fields').item.json['Job Board'] }}",
-            "Desired Role": "={{ $('Edit Fields').item.json['Desired Role'] }}",
-            "Resume link": "={{ $('Edit Fields').item.json['Resume Link'] }}",
+            "Job Boards": "={{$node[\"Webhook\"].json[\"body\"][\"jobBoards\"].join(\", \")}}",
+            "Desired Role": "={{$node[\"Webhook\"].json[\"body\"][\"role\"]}}",
+            "Resume link": "={{$node[\"Webhook\"].json[\"body\"][\"resume_link\"]}}",
             "Phone number": "={{ $('Edit Fields').item.json.Phone }}",
-            "Name": "={{ $('Edit Fields').item.json.body.name }}",
-            "Email": "={{ $('Edit Fields').item.json.Email }}",
-            "Alert_Frequency": "={{ $('Edit Fields').item.json['Alert Frequency'] }}",
-            "Last_Alert_Time": ""
+            "Name": "={{$node[\"Webhook\"].json[\"body\"][\"name\"]}}",
+            "Email": "={{$node[\"Webhook\"].json[\"body\"][\"email\"]}}",
+            "Alert_Frequency": "={{ $('Edit Fields').item.json['Alert Frequency'] }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -262,7 +261,7 @@
         "text": "={{ $json.text }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "You are an expert ATS resume parser with strict accuracy requirements.\n\nYour task: Extract information ONLY from the provided resume text.\n\nCRITICAL RULES:\n1. Do NOT hallucinate or guess any information\n2. If information is not explicitly present, leave the field empty\n3. For experience calculation: COUNT ONLY PROFESSIONAL WORK EXPERIENCE\n   - Include: Full-time jobs, internships, freelance work, contract positions\n   - Exclude: Education duration, academic projects, coursework\n   - Calculate total years from earliest job start date to most recent job end date (or present)\n4. Search the entire resume including experience section, projects, summary, and skills\n\nExtraction Guidelines:\n- full_name: Extract the candidate's complete name\n- phone: Extract phone number in any format present\n- email: Extract email address\n- skills: List only explicitly mentioned technical/professional skills\n- tools: List only explicitly mentioned software, platforms, or technologies\n- experience: Calculate ONLY professional work experience in years (e.g., \"5 years\", \"2.5 years\")\n- roles: Extract all job titles from work experience section\n- industry: Identify the primary industry based on companies worked at\n\nReturn structured data matching the output schema.",
+          "systemMessage": "You are an expert ATS resume parser with strict accuracy requirements.\n\nYour task: Extract information ONLY from the provided resume text.\n\nCRITICAL RULES:\n1. Do NOT hallucinate or guess any information.\n2. If information is not explicitly present, leave the field empty.\n3. For experience calculation: COUNT ONLY PROFESSIONAL WORK EXPERIENCE.\n   - Include: Full-time jobs, internships, freelance work, contract positions.\n   - Exclude: Education duration, academic projects, coursework.\n   - Calculate total years from earliest job start date to most recent job end date (or present).\n4. Search the entire resume including experience section, projects, summary, and skills.\n\nExtraction Guidelines:\n- full_name: Extract the candidate's complete name.\n- phone: Extract phone number in any format present.\n- email: Extract email address.\n- skills: List only explicitly mentioned technical or professional skills.\n- tools: List only explicitly mentioned software, platforms, or technologies.\n- experience: Calculate ONLY professional work experience in years (e.g., \"5 years\", \"2.5 years\").\n- roles: Extract all job titles from work experience section.\n- industry: Identify the primary industry based on companies worked at.\n\nIMPORTANT OUTPUT INSTRUCTIONS:\nReturn ONLY valid JSON.\nDo NOT return explanations.\nDo NOT return headings.\nDo NOT return markdown.\nDo NOT return text before or after JSON.\nThe response must start with { and end with }.\nIf a field is missing, return \"\" for strings or [] for arrays.\n\nThe JSON structure must be:\n\n{\n  \"full_name\": \"\",\n  \"phone\": \"\",\n  \"email\": \"\",\n  \"skills\": [],\n  \"tools\": [],\n  \"experience\": \"\",\n  \"roles\": [],\n  \"industry\": \"\"\n}",
           "returnIntermediateSteps": true,
           "passthroughBinaryImages": true
         }
@@ -387,25 +386,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1FBgFLnM5dqPvmP584zxiHlpVAo7lsTPjYfT0b1yxpTQ",
+          "value": "1o-DIDMij4h-V7g-0hpC1Z2aqv0Hdkxs_1nmt066l1Hg",
           "mode": "list",
           "cachedResultName": "AI copilot ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FBgFLnM5dqPvmP584zxiHlpVAo7lsTPjYfT0b1yxpTQ/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1o-DIDMij4h-V7g-0hpC1Z2aqv0Hdkxs_1nmt066l1Hg/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": "gid=0",
+          "value": 1677178941,
           "mode": "list",
-          "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FBgFLnM5dqPvmP584zxiHlpVAo7lsTPjYfT0b1yxpTQ/edit#gid=0"
-        },
-        "filtersUI": {
-          "values": [
-            {
-              "lookupColumn": "Name",
-              "lookupValue": "Manohar"
-            }
-          ]
+          "cachedResultName": "Job_Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1o-DIDMij4h-V7g-0hpC1Z2aqv0Hdkxs_1nmt066l1Hg/edit#gid=1677178941"
         },
         "options": {}
       },
@@ -449,7 +440,8 @@
         928
       ],
       "id": "ed5398d4-8eb0-456d-8dd9-bc796e7ad899",
-      "name": "HTTP Request1"
+      "name": "HTTP Request1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -632,7 +624,8 @@
         928
       ],
       "id": "f35ad678-0c12-413e-84d5-1834bbc9d2e9",
-      "name": "Remove Duplicates"
+      "name": "Remove Duplicates",
+      "disabled": true
     },
     {
       "parameters": {
@@ -843,7 +836,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "96b0d60e-b89b-4cd4-afce-202e231836a6",
+  "versionId": "95b89ba4-2f7b-43a1-89b8-7c16512541ad",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cff77f6763984fe6540bd5a484c4395777983c8792d3d4e90a1ba904c3342980"
